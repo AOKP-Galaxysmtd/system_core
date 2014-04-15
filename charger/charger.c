@@ -705,7 +705,7 @@ static void draw_capacity(struct charger *charger)
     x = (gr_fb_width() - str_len_px) / 2;
     y = (gr_fb_height() + char_height) / 2;
     android_green();
-    gr_text(x, y, cap_str, 0);
+    gr_text(x, y, cap_str/*, 0*/);
 }
 
 /* returns the last y-offset of where the surface ends */
@@ -795,6 +795,7 @@ static void update_screen_state(struct charger *charger, int64_t now)
     if (batt_anim->cur_cycle == batt_anim->num_cycles) {
         reset_animation(batt_anim);
         charger->next_screen_transition = -1;
+        set_backlight(false);
         gr_fb_blank(true);
         set_backlight(false);
 
@@ -1290,6 +1291,7 @@ int main(int argc, char **argv)
     ev_sync_key_state(set_key_callback, charger);
 
 #ifndef CHARGER_DISABLE_INIT_BLANK
+    set_backlight(false);
     gr_fb_blank(true);
     set_backlight(false);
 #endif
